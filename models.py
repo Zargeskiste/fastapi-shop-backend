@@ -55,8 +55,8 @@ class Product(ProductBase):
     id: int = Field(..., description="Unique product identifier")
     stock: Stock = Field(default_factory=lambda: Stock(quantity=0))
     
-    class Config:
-        schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "id": 1,
                 "name": "Smartphone X",
@@ -66,3 +66,4 @@ class Product(ProductBase):
                 "stock": {"quantity": 25}
             }
         }
+    }
