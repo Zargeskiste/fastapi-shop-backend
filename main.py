@@ -1,5 +1,6 @@
-from fastapi import FastAPI, HTTPException, Path, Depends
+from fastapi import FastAPI, HTTPException, Path, Depends, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 from typing import List, Optional, Dict
 import uvicorn
@@ -12,6 +13,20 @@ app = FastAPI(
     description="API for Angular Shop Frontend",
     version="1.0.0"
 )
+
+@app.get("/", tags=["Root"])
+async def root():
+    """Root endpoint that provides API information and redirects to documentation"""
+    return {
+        "message": "Welcome to the Shop API Backend",
+        "version": "1.0.0",
+        "available_endpoints": [
+            {"path": "/api/products/", "description": "Get all products"},
+            {"path": "/api/products/{product_id}/", "description": "Get product by ID"},
+            {"path": "/api/products/create/", "description": "Create a new product"}
+        ],
+        "documentation": "/docs"
+    }
 
 # Add CORS middleware to allow frontend access
 app.add_middleware(
